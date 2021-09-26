@@ -20,7 +20,13 @@
               </nuxt-link>
             </li>
             <li class="nav-item">
-              <nuxt-link :to="{ name: 'settings' }" class="nav-link">
+              <nuxt-link
+                :to="{
+                  name: 'profile',
+                  params: { username: auth.user.username },
+                }"
+                class="nav-link"
+              >
                 <img class="user-pic" :src="auth.user.image">
                 {{ auth.user.username }}
               </nuxt-link>
