@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-light">
       <div class="container">
-        <nuxt-link to="/" class="navbar-brand" href="index.html">conduit</nuxt-link>
+        <nuxt-link to="/" class="navbar-brand">conduit</nuxt-link>
         <ul class="nav navbar-nav pull-xs-right">
           <li class="nav-item">
             <!-- Add "active" class when you're on that page" -->

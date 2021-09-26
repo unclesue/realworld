@@ -11,7 +11,9 @@
           </p>
 
           <ul class="error-messages">
-            <li>That email is already taken</li>
+            <template v-for="val, key in errors">
+              <li v-for="msg in val" :key="msg">{{ `${key} ${msg}` }} </li>
+            </template>
           </ul>
 
           <form @submit.prevent="onSubmit">
@@ -47,7 +49,8 @@ export default {
       user: {
         email: 'ssxsyj@gmail.com',
         password: 'realworld'
-      }
+      },
+      errors: {}
     }
   },
   computed: {
@@ -57,10 +60,14 @@ export default {
   },
   methods: {
     async onSubmit() {
-      const { data } = await login({ user: this.user })
-      this.$store.commit('setAuth', data)
-      Cookie.set('auth', JSON.stringify(data))
-      this.$router.push('/')
+      try {
+        const { data } = await login({ user: this.user })
+        this.$store.commit('setAuth', data)
+        Cookie.set('auth', JSON.stringify(data))
+        this.$router.push('/')
+      } catch (err) {
+        this.errors = err.response.data.errors
+      }
     }
   }
 }
