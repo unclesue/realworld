@@ -1,5 +1,6 @@
 export default {
   router: {
+    linkActiveClass: 'active',
     extendRoutes(routes, resolve) {
       routes.splice(0)
       routes.push(

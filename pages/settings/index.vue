@@ -36,13 +36,21 @@
 </template>
 
 <script>
+const Cookie = process.client ? require('js-cookie') : undefined
+
 export default {
   name: 'Settings',
+  middleware: 'authenticated',
   data() {
     return {
     }
   },
-  methods: {}
+  methods: {
+    logout() {
+      Cookie.remove('auth')
+      this.$store.commit('setAuth', null)
+    }
+  }
 }
 </script>
 

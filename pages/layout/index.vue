@@ -2,24 +2,32 @@
   <div>
     <nav class="navbar navbar-light">
       <div class="container">
-        <a class="navbar-brand" href="index.html">conduit</a>
+        <nuxt-link to="/" class="navbar-brand" href="index.html">conduit</nuxt-link>
         <ul class="nav navbar-nav pull-xs-right">
           <li class="nav-item">
             <!-- Add "active" class when you're on that page" -->
-            <a class="nav-link active" href="">Home</a>
+            <nuxt-link class="nav-link" to="/" exact>Home</nuxt-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="">
-              <i class="ion-compose" />&nbsp;New Post
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="">
-              <i class="ion-gear-a" />&nbsp;Settings
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="">Sign up</a>
+          <template v-if="auth">
+            <li class="nav-item">
+              <nuxt-link :to="{ name: 'editor' }" class="nav-link">
+                <i class="ion-compose" />&nbsp;New Post
+              </nuxt-link>
+            </li>
+            <li class="nav-item">
+              <nuxt-link :to="{ name: 'settings' }" class="nav-link">
+                <i class="ion-gear-a" />&nbsp;Settings
+              </nuxt-link>
+            </li>
+            <li class="nav-item">
+              <nuxt-link :to="{ name: 'settings' }" class="nav-link">
+                <img class="user-pic" :src="auth.user.image">
+                {{ auth.user.username }}
+              </nuxt-link>
+            </li>
+          </template>
+          <li v-else class="nav-item">
+            <nuxt-link :to="{ name: 'login' }" class="nav-link">Sign in</nuxt-link>
           </li>
         </ul>
       </div>
@@ -39,11 +47,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'Layout',
   data() {
     return {
     }
+  },
+  computed: {
+    ...mapState(['auth'])
   },
   methods: {}
 }
