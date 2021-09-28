@@ -55,7 +55,7 @@
                   params: { username: article.author.username },
                 }"
               >
-                <img :src="article.author.image">
+                <!-- <img :src="article.author.image"> -->
               </nuxt-link>
               <div class="info">
                 <nuxt-link
@@ -69,7 +69,12 @@
                 </nuxt-link>
                 <span class="date">{{ article.createdAt }}</span>
               </div>
-              <button class="btn btn-outline-primary btn-sm pull-xs-right" :class="{active: article.favorited}">
+              <button
+                class="btn btn-outline-primary btn-sm pull-xs-right"
+                :class="{ active: article.favorited }"
+                :disabled="article.favoriteDisabled"
+                @click="onFavorite(article)"
+              >
                 <i class="ion-heart" /> {{ article.favoritesCount }}
               </button>
             </div>
@@ -114,7 +119,7 @@
 </template>
 
 <script>
-import { getArticles } from '@/api/article'
+import { getArticles, addFavorite, deleteFavorite } from '@/api/article'
 import { getTags } from '@/api/tag'
 import { mapState } from 'vuex'
 
@@ -155,7 +160,21 @@ export default {
     ...mapState(['auth'])
   },
   watchQuery: ['page', 'tab', 'tag'],
-  methods: {}
+  methods: {
+    async onFavorite(article) {
+      article.favoriteDisabled = true
+      if (article.favorited) {
+        await deleteFavorite(article.slug)
+        article.favorited = false
+        article.favoritesCount += -1
+      } else {
+        await addFavorite(article.slug)
+        article.favorited = true
+        article.favoritesCount += 1
+      }
+      article.favoriteDisabled = false
+    }
+  }
 }
 </script>
 
